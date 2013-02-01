@@ -1,5 +1,6 @@
 import re
 import shutil
+import subprocess
 
 
 def unbin(line):
@@ -15,3 +16,21 @@ def translate(fname):
         out.write(unbin(line))
     out.close()
     shutil.move(fname + '_', fname)
+
+
+def handle_cmdline(path, args):
+    for fname in args:
+        if fname[-2:] == '.c':
+            # make a backup of the original file
+            shutil.copy(fname, fname + '.bck')
+
+            # translate the file
+            translate(fname)
+
+    # compile it
+    subprocess.call([path] + args)
+
+    for fname in args:
+        if fname[-2:] == '.c':
+            # restore the original file
+            shutil.move(fname + '.bck', fname)
