@@ -7,7 +7,16 @@ def unbin(line):
     def decode_binary(x):
         return x.group(1) + str(int(x.group(2), 2))
 
-    return re.sub(r'(\W)0b([0-1]+)', decode_binary, line)
+    arr = line.split('"')
+    quoted = False
+    for x in xrange(len(arr)):
+        if quoted is False:
+            arr[x] = re.sub(r'(\W|^)0b([0-1]+)', decode_binary, arr[x])
+            quoted = True
+        elif arr[x][-1] != '\\':
+            quoted = False
+
+    return '"'.join(arr)
 
 
 def translate(fname):
