@@ -13,7 +13,7 @@ def unbin(line):
         if quoted is False:
             arr[x] = re.sub(r'(\W|^)0b([0-1]+)', decode_binary, arr[x])
             quoted = True
-        elif arr[x][-1] != '\\':
+        elif arr[x] and arr[x][-1] != '\\':
             quoted = False
 
     return '"'.join(arr)
