@@ -1,6 +1,7 @@
 import re
 import shutil
 import subprocess
+import sys
 
 
 def unbin(line):
@@ -43,3 +44,7 @@ def handle_cmdline(path, args):
         if fname[-2:] == '.c':
             # restore the original file
             shutil.move(fname + '.bck', fname)
+
+if __name__ == '__main__':
+    for line in open(sys.argv[1]):
+        print unbin(line)
